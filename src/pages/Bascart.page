@@ -1,0 +1,47 @@
+<!--
+ - Created by willfong on 12/4/19.
+ -->
+
+<apex:page id="Bascart" standardController="Opportunity">
+
+    <apex:includeLightning />
+
+    <!-- iPad Dimensions-->
+    <div class="slds-scrollable" id="ProductPickerDisplayId" style="width:130rem"></div>
+    <div class="slds-scrollable" id="OpportunityProductSelectionDisplayId" style="width:130rem"></div>
+
+    <script>
+        $Lightning.use("c:Bascart", function() {
+            $Lightning.createComponent("c:BascartShelf", {},
+                "ProductPickerDisplayId",
+                function(cmp) {
+                    $A.eventService.addHandler({
+                        event: 'force:navigateToSObject',
+                        handler: function(event) {
+                            console.log('EVENT HANDLER FIRED!');
+                            window.location = '{!URLFOR($Action.Opportunity.View, Opportunity.Id)}';
+                        }
+                    });
+                    cmp.set("v.oppId", "{!$CurrentPage.parameters.id}");
+                    console.log("c:BascartShelf Loaded");
+                });
+        });
+
+        $Lightning.use("c:Bascart", function() {
+            $Lightning.createComponent("c:BascartCheckout", {},
+                "OpportunityProductSelectionDisplayId",
+                function(cmp) {
+                    $A.eventService.addHandler({
+                        event: 'force:navigateToSObject',
+                        handler: function(event) {
+                            console.log('EVENT HANDLER FIRED!');
+                            window.location = '{!URLFOR($Action.Opportunity.View, Opportunity.Id)}';
+                        }
+                    });
+                    cmp.set("v.oppId", "{!$CurrentPage.parameters.id}");
+                    console.log("c:Bascart Loaded");
+                });
+        });
+    </script>
+
+</apex:page>

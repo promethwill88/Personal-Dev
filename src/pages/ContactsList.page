@@ -1,0 +1,61 @@
+<apex:page controller="ContactsListHandler" showHeader="true" sidebar="true">
+	
+	<!-- Static Resources -->
+	<apex:image id="prof" value="{!$Resource.Willprof}" width="80" height="80"/>
+	
+	<apex:includeScript value="{!$Resource.jQuery}"/>
+	<script type="text/javascript">
+		jQuery.noConflict();
+		jQuery(document).ready(function() {
+			jQuery("#message").html("Welcome! jQuery Connected");
+		});
+	</script>	
+
+	<h1 id="message"></h1>
+
+	<apex:form >  
+	
+		<apex:pageBlock title="Contacts List" id="contacts_list">
+
+			<!-- New Contact button -->
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton action="{!URLFOR($Action.Contact.NewContact)}" onclick="window.opener.document.location='{!URLFOR($Action.Contact.NewContact)}'" value="New Contact"/>
+			</apex:pageBlockButtons>
+
+			
+			<apex:pageBlockTable value="{!contacts}" var="ct">
+				
+				<apex:column value="{!ct.FirstName}"> 
+					<!-- Nested component with commandLink to call sortByFirstName -->
+					<apex:facet name="header"> 
+						<apex:commandLink action="{!sortByFirstName}" reRender="contacts_list">
+							<!-- Instead of hardcoding text, used this so field will be consistent -->
+							<apex:outputText value="{!$ObjectType.Contact.Fields.FirstName.Label}"/>
+						
+						</apex:commandLink>
+					</apex:facet>
+
+				</apex:column>
+
+				<apex:column value="{!ct.LastName}">
+					<!-- Nested component with commandLink to call sortByLastName -->
+					<apex:facet name="header">
+						<apex:commandLink action="{!sortByLastName}" reRender="contacts_list">
+							<!-- Instead of hardcoding text, used this so field will be consistent -->
+							<apex:outputText value="{!$ObjectType.Contact.Fields.LastName.Label}"/>
+
+						</apex:commandLink>
+					</apex:facet>
+
+				</apex:column>
+				
+				<apex:column value="{!ct.Title}"/>
+				<apex:column value="{!ct.Email}"/>
+
+			</apex:pageBlockTable>
+
+		</apex:pageBlock>
+
+	</apex:form>
+
+</apex:page>

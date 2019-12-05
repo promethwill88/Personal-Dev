@@ -1,0 +1,163 @@
+<!--
+ - Created by willfong on 12/4/19.
+ -->
+
+<aura:component description="BascartCheckout" controller="BascartController" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+
+    <!-- Input Attributes -->
+    <aura:attribute name="oppId" type="String" access="global"/>
+    <aura:attribute name="selectedProductObjectList" type="List" default="[]" access="global"/>
+    <aura:attribute name="alreadyInsertedProductList" type="List" default="[]" access="global"/>
+
+    <!-- App Event Listener -->
+    <aura:handler event="c:BascartAppEvent" action="{!c.listenApplicationEvent}"/>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <!-- table -->
+    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid">
+        <!-- thead -->
+        <thead>
+        <tr class="slds-line-height_reset">
+            <th class="slds-text-align_right" scope="col" style="width:4rem">
+                <span id="column-group-header" class="slds-assistive-text">Choose a row</span>
+            </th>
+            <!-- Model -->
+            <th aria-label="Model" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Model">Model</span>
+                </div>
+            </th>
+            <!-- Body Style -->
+            <th aria-label="Body Style" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Body Style">Body Style</span>
+                </div>
+            </th>
+            <!-- Quantity -->
+            <th aria-label="Quantity" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Quantity">Quantity</span>
+                </div>
+            </th>
+            <!-- Exterior -->
+            <th aria-label="Exterior" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Exterior">Exterior</span>
+                </div>
+            </th>
+            <!-- Interior -->
+            <th aria-label="Interior" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Interior">Interior</span>
+                </div>
+            </th>
+            <!-- Client Notes -->
+            <th aria-label="Client Notes" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Client Notes">Client Notes</span>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <!-- tbody -->
+        <tbody>
+        <aura:iteration items="{!v.selectedProductObjectList}" var="sel" indexVar="index">
+            <tr aria-selected="false" class="slds-hint-parent">
+                <td class="slds-text-align_right" role="gridcell" id="{!index}" onclick="{!c.removeProductRow}">
+                    <div class="slds-delete" style="padding-top: 20px;">
+                        <a><lightning:icon iconName="action:remove" size="xx-small"/></a>
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="" style="padding-top: 20px;">{!sel.productName}</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="" style="padding-top: 20px;">{!sel.bodyStyle}</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-form-element__control">
+                        <lightning:input name="{!sel.productId}" value="{!sel.quantity}" label="" required="true"/>
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-form-element__control" style="padding-top: 20px;">
+                        <lightning:select name="{!sel.productId}" value="{!sel.exterior}" label="">
+                            <option value="--Select--">--Select--</option>
+                            <option value="Bianco Avus">Bianco Avus</option>
+                            <option value="Argento Nurburgring">Argento Nurburgring</option>
+                            <option value="Avorio">Avorio</option>
+                            <option value="Rosso Dino">Rosso Dino</option>
+                            <option value="Rosso Fiorano">Rosso Fiorano</option>
+                            <option value="Rosso Corsa">Rosso Corsa</option>
+                            <option value="Rosso Scuderia">Rosso Scuderia</option>
+                            <option value="Rosso Mugello">Rosso Mugello</option>
+                            <option value="Blu Swaters">Blu Swaters</option>
+                            <option value="Blu Tour De France">Blu Tour De France</option>
+                            <option value="Azzurro California">Azzurro California</option>
+                            <option value="Blu Mirabeau">Blu Mirabeau</option>
+                            <option value="Blu Abu Dhabi">Blu Abu Dhabi</option>
+                            <option value="Blue Scozia">Blue Scozia</option>
+                            <option value="Verde British Racing">Verde British Racing</option>
+                            <option value="Grigio Ferro">Grigio Ferro</option>
+                            <option value="Canna Di Fucile">Canna Di Fucile</option>
+                            <option value="Grigio Silverstone">Grigio Silverstone</option>
+                            <option value="Grigio Alloy">Grigio Alloy</option>
+                            <option value="Grigio Scuro">Grigio Scuro</option>
+                            <option value="Nero Daytona">Nero Daytona</option>
+                            <option value="Blu Pozzi">Blu Pozzi</option>
+                            <option value="Grigio Titanio">Grigio Titanio</option>
+                            <option value="Giallo Modena">Giallo Modena</option>
+                            <option value="Nero">Nero</option>
+                        </lightning:select>
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-form-element__control" style="padding-top: 20px;">
+                        <lightning:select name="{!sel.productId}" value="{!sel.interior}" label="">
+                            <option value="--Select--">--Select--</option>
+                            <option value="Beige Tradizione">Beige Tradizione</option>
+                            <option value="Nappa Beige">Nappa Beige</option>
+                            <option value="Nappa Blu Medio">Nappa Blu Medio</option>
+                            <option value="Nappa Blu Sterlay">Nappa Blu Sterlay</option>
+                            <option value="Nappa Bordeaux">Nappa Bordeaux</option>
+                            <option value="Nappa Charcoal">Nappa Charcoal</option>
+                            <option value="Nappa Cioccolato	">Nappa Cioccolato</option>
+                            <option value="Nappa Crema">Nappa Crema</option>
+                            <option value="Nappa Cuoio">Nappa Cuoio</option>
+                            <option value="Nappa Iroko">Nappa Iroko</option>
+                            <option value="Nappa Nero">Nappa Nero</option>
+                            <option value="Nappa Rosso">Nappa Rosso</option>
+                            <option value="Nappa Sabbia">Nappa Sabbia</option>
+                            <option value="Nappa Tortora">Nappa Tortora</option>
+                            <option value="Vinyl Spider / Dino Black Grain Long">Vinyl Spider / Dino Black Grain Long</option>
+                        </lightning:select>
+                    </div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-form-element__control" style="padding-top: 20px;">
+                        <lightning:textarea name="{!sel.productId}" value="{!sel.notes}" label=""/>
+                    </div>
+                </td>
+            </tr>
+        </aura:iteration>
+        </tbody>
+    </table>
+
+    <br/>
+    <br/>
+    <br/>
+
+    <!-- buttons -->
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+            <lightning:button class="slds-button slds-button_brand slds-float--right" label="Save" onclick="{!c.insertOli}"/>
+        </div>
+        <div class="slds-col">
+            <lightning:button class="slds-button slds-button_neutral slds-float--left" label="Cancel" onclick="{!c.exitProductPicker}"/>
+        </div>
+    </div>
+
+</aura:component>

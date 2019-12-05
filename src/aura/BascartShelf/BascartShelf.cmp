@@ -1,0 +1,92 @@
+<!--
+ - Created by willfong on 12/4/19.
+ -->
+
+<aura:component description="BascartShelf" controller="BascartController" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
+    <!-- Input Attributes -->
+    <aura:attribute name="oppId" type="String" access="global"/>
+    <aura:attribute name="productObjectList" type="List" access="global"/>
+    <aura:attribute name="selectedProductList" type="List" default="[]" access="global"/>
+
+    <aura:attribute name="oppObj" type="Opportunity" access="global"/>
+
+    <!-- App Event Fire-->
+    <aura:registerEvent name="BascartAppEvent" type="c:BascartAppEvent"/>
+    <!-- Init Listener -->
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+
+    <br/>
+    <!-- buttons -->
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col">
+            <lightning:button class="slds-button slds-button_brand slds-float--right" label="Select" onclick="{!c.fireApplicationEvent}"/>
+        </div>
+        <div class="slds-col">
+            <lightning:button class="slds-button slds-button_neutral slds-float--left" label="Cancel" onclick="{!c.exitProductPicker}"/>
+        </div>
+    </div>
+    <br/>
+    <!-- table -->
+    <table aria-multiselectable="true" class="slds-table slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols" role="grid">
+        <!-- thead -->
+        <thead>
+        <tr class="slds-line-height_reset">
+            <th class="slds-text-align_right" scope="col" style="width:3.25rem">
+            </th>
+            <!-- Model -->
+            <th aria-label="Model" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Model">Model</span>
+                </div>
+            </th>
+            <!-- Class -->
+            <th aria-label="Class" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Product Code">Class</span>
+                </div>
+            </th>
+            <!-- Body Style Description -->
+            <th aria-label="Body Style" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                    <span class="slds-truncate" title="Body Style">Body Style</span>
+                </div>
+            </th>
+            <!-- Layout -->
+            <th aria-label="Layout" aria-sort="none" class="slds-is-resizable slds-is-sortable" scope="col">
+                <a class="slds-th__action slds-text-link_reset" href="javascript:void(0);" role="button" tabindex="0">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                        <span class="slds-truncate" title="Layout">Layout</span>
+                    </div>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <!-- tbody -->
+        <tbody>
+        <aura:iteration items="{!v.productObjectList}" var="pObj" indexVar="index">
+            <tr aria-selected="false" class="slds-hint-parent">
+                <td class="slds-text-align_right" role="gridcell">
+                    <div class="checkbox-button">
+                        <lightning:input name="options" type="checkbox-button" aura:id="boxPack" value="{!pObj}" tabindex="0" label="123" variant="label-hidden" onchange="{!c.handleClick}" checked="false"/>
+                    </div>
+                </td>
+                <th scope="row">
+                    <div class="slds-truncate" title="{!pObj.productName}">
+                        <a href="javascript:void(0);" tabindex="0">{!pObj.productName}</a>
+                    </div>
+                </th>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="{!pObj.productClass}">{!pObj.productClass}</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="{!pObj.bodyStyle}">{!pObj.bodyStyle}</div>
+                </td>
+                <td role="gridcell">
+                    <div class="slds-truncate" title="{!pObj.layout}">{!pObj.layout}</div>
+                </td>
+            </tr>
+        </aura:iteration>
+        </tbody>
+    </table>
+
+</aura:component>

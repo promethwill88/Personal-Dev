@@ -1,0 +1,7 @@
+<!--
+ - Created by willfong on 12/4/19.
+ -->
+
+<aura:event type="APPLICATION" description="BascartAppEvent">
+    <aura:attribute name="selectedProducts" type="List"/>
+</aura:event>
